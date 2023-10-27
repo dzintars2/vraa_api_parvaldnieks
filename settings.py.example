@@ -1,0 +1,16 @@
+token = {
+	'url': 'https://apigw.viss.gov.lv/token',			#TOKEN URL
+	'clientId': '',	#Klienta lietojuma identifikators bez 'urn:oauth2:'
+	'clientSecret': '', #Klienta lietojuma atslēga
+	'audience': 'https://ha.viss.gov.lv/STS/VISS.Pfas.STS/oauth2/token', #neskaidrs, bet obligāts parametrs
+	'privateKey': '''-----BEGIN RSA PRIVATE KEY-----
+-----END RSA PRIVATE KEY-----''', #privateKey izgūta no PFX faila. Ar visu ---BEGIN ...--- ... --END ...---
+	'publicKey': '''CERTIFICATE''' #no PFX faila izgūts sertifikāts bez --- BEGIN CERTIFICATE --- un ---END CERTIFICATE---
+
+}
+
+legalEntityUrl = 'https://apigw.viss.gov.lv/legalentity/v1.0/legal-entity/'
+
+authToken = ''
+
+dataFolder = 'data/'

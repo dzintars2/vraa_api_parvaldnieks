@@ -1,0 +1,4 @@
+data/*
+public_data/*
+settings.py
+__pycache__/
