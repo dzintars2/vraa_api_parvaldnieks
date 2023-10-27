@@ -1,10 +1,10 @@
-import asyncio
 from settings import token, authToken, legalEntityUrl, dataFolder
 import uuid, time, jwt, json, time, csv, os.path, requests
 
 session = None
 error_count = 0
 
+#izgūst tokenu
 def getToken():
 	print('Izgūstu tokenu')
 	global authToken
@@ -44,6 +44,7 @@ def getToken():
 		print(r.status_code)
 		print(r.text)
 
+#izgūst LegalEntity datus
 def getLegalEntity(regno, history = False, count = 0):
 	global error_count
 	headers = {
@@ -83,24 +84,18 @@ def main():
 	speed = time.time()
 	dataRead = 0
 	getToken()
-	if authToken == '': 
-		return False
 	global session
 	session = requests.Session()
-	#with open('public_data/register.csv', 'r', encoding='UTF-8') as csvfile:
-	if 1==1:
-		#csvreader = csv.reader(csvfile)
+	if authToken != '':
 		csvreader = csv.reader(open('public_data/register.csv', "r", encoding="UTF-8"), delimiter=";")
-		#fields = next(csvreader)
 		for row in csvreader:
 			try:
-				#data = row[0].split(';')
-				regno = row[0] #data[0]
-				regtype = row[7] #data[7]
-				terminated = row[12] #data[12]
+				regno = row[0] #Registrācijas numurs
+				regtype = row[7] #Reģistra veids
+				terminated = row[12] #izslēgts no reģisra
 				if regtype in ('K', 'B', 'U', 'C', 'E') and terminated == '' and os.path.isfile(dataFolder + str(regno) + '.json') == False:
 					dataRead += 1
-					if dataRead > 200000: break
+					if dataRead > 200000: break #limits pie kura apturam apstrādi
 					if getLegalEntity(regno, True) == False: break
 					if dataRead % 100 == 0:
 						print("----- %s: speed: %s sec/req, total: %s seconds -----" % (dataRead, (time.time() - speed) / 100, time.time() - start_time))
@@ -108,6 +103,8 @@ def main():
 			except Exception as e:
 				print(e)
 				print(row)
+	else:
+		print('Tokens nav izgūts')
 	print("--- %s seconds ---" % (time.time() - start_time))
 
 #asyncio.run(main())
